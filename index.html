@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>URL.createObjectURL</title>
+		<base href="http://fumaocdn.letwx.com/app/changeface/" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+		<meta content="no-cache" http-equiv="pragma">
+		<meta content="telephone=no, address=no" name="format-detection">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</head>
+	<body>
+		<input type="file" capture="camera" id="imgInput" />	
+
+		<script type="text/javascript">
+		var imgInput = document.getElementById('imgInput');
+		function getImageByFileReader(){
+			if(typeof FileReader == 'undefined'){  
+			    alert('你的浏览器不支持FileReader!');
+			    return;
+			}
+			var file = null;
+			imgInput.onchange = function(){
+				console.log(this.files);
+				if(this.files.length<=0){
+					return;
+				}
+				file = this.files[0];
+				if(!/image\/\w+/.test(file.type)){  
+			        alert("请上传图片！");  
+			        return false;  
+			    }  
+
+			    var reader = new FileReader();
+			    reader.readAsDataURL(file);
+			    reader.onload = function(){
+			    	console.log(this.result);
+			    	//this.result是一个base64格式的字符串
+			    }
+			}
+		}
+		// getImageByFileReader();
+
+		function getImageByURL(){
+			var URL = URL || webkitURL;
+			if(typeof URL == 'undefined'){
+				alert('你的浏览器不支持URL对象');
+				return;
+			}
+			var file = null;
+			imgInput.onchange = function(){
+				file = this.files[0];
+				var blob = URL.createObjectURL(file);
+				console.log(blob);
+				//blob是一个blob字符串，将这个字符串放到img的src中就可以正常的展示图片
+			}
+		}
+		getImageByURL();
+
+		</script>
+	</body>
+</html>
